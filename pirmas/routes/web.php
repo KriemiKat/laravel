@@ -18,12 +18,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/labas', fn() => '<h1 style=color:crimson;">Labas</h1>');
-Route::get('/labas/briedi', [PirmasController::class, 'hello']);
-Route::get('/labas/vovere', [PirmasController::class, 'hellov']);
+Route::get('/labas', fn() => '<h1 style=color:crimson;">Labas</h1>')->name('briedis');
 
-Route::get('/labas/{animal}', [PirmasController::class, 'helloAnimal']);
+Route::prefix('labas')->group(function () {
 
-Route::get('/labas/{animal}/{color}/color', [PirmasController::class, 'helloFancy']);
+    Route::get('/briedi', [PirmasController::class, 'hello'])->name('briedis');
+    Route::get('/vovere', [PirmasController::class, 'helloV']);
+    Route::get('/{animal}', [PirmasController::class, 'helloAnimal']);
+    Route::get('/{animal}/{color}/color', [PirmasController::class, 'helloFancy'])->name('fancy');
+
+});
+
 
 Route::get('/sum/{a}/{b}', [PirmasController::class, 'sum']);
