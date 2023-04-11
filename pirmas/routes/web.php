@@ -36,6 +36,7 @@ Route::post('calc', [C::class, 'doCalc'])->name('do-calc');
 
 
 Route::prefix('clients')->name('clients-')->group(function () {
+    Route::get('/', [CL::class, 'index'])->name('index');
     Route::get('/create', [CL::class, 'create'])->name('create');
     Route::post('/create', [CL::class, 'store'])->name('store');
 });
