@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PirmasController;
 use App\Http\Controllers\CalcController as C;
+use App\Http\Controllers\ClientController as CL;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +34,16 @@ Route::prefix('labas')->group(function () {
 Route::get('calc', [C::class, 'show'])->name('show');
 Route::post('calc', [C::class, 'doCalc'])->name('do-calc');
 
-Route::get('/sum/{a}/{b}', [PirmasController::class, 'sum']);
+
+Route::prefix('clients')->name('clients-')->group(function () {
+    Route::get('/create', [CL::class, 'create'])->name('create');
+    Route::post('/create', [CL::class, 'store'])->name('store');
+});
+
+
+
+Route::get('/sum/{a}/{b?}', [PirmasController::class, 'sum']);
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
