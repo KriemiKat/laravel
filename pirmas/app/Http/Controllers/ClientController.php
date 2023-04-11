@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 class ClientController extends Controller
@@ -33,6 +34,22 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:3',
+            'surname' => 'required|min:3',
+        ]);
+
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()
+                ->back()
+                ->withErrors($validator);
+        }
+
+
+
+
+
         $client = new Client;
         $client->name = $request->name;
         $client->surname = $request->surname;
@@ -42,35 +59,35 @@ class ClientController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Client $client)
     {
-        //
+        return view('clients.show', [
+            'client' => $client
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Client $client)
     {
-        //
+        return view('clients.edit', [
+            'client' => $client
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Client $client)
     {
-        //
+        $client->name = $request->name;
+        $client->surname = $request->surname;
+        $client->tt = isset($request->tt) ? 1 : 0;
+        $client->save();
+        return redirect()->route('clients-index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
+        return redirect()->route('clients-index');
     }
 }
