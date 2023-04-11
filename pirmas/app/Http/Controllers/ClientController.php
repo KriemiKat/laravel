@@ -21,17 +21,12 @@ class ClientController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
    return view('clients.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -45,9 +40,6 @@ class ClientController extends Controller
                 ->back()
                 ->withErrors($validator);
         }
-
-
-
 
 
         $client = new Client;
@@ -70,6 +62,18 @@ class ClientController extends Controller
 
     public function edit(Client $client)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:3',
+            'surname' => 'required|min:3',
+        ]);
+
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()
+                ->back()
+                ->withErrors($validator);
+        }
+
         return view('clients.edit', [
             'client' => $client
         ]);
